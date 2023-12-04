@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz App</title>
+  <style>
+    /* Styles for the quiz app */
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .quiz-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+    }
+    #question {
+      margin-bottom: 15px;
+    }
+    .options label {
+      display: block;
+      margin-bottom: 10px;
+    }
+    #feedback {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    button {
+      padding: 8px 20px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h1>Quiz App</h1>
+    <div id="question"></div>
+    <div class="options" id="options"></div>
+    <button onclick="checkAnswer()">Submit</button>
+    <p id="feedback"></p>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "What is the capital of France?",
+        options: ["Paris", "London", "Berlin", "Madrid"],
+        answer: "Paris"
+      },
+      {
+        question: "What is the largest planet in our solar system?",
+        options: ["Jupiter", "Mars", "Venus", "Saturn"],
+        answer: "Jupiter"
+      },
+      // Add more questions here
+    ];
+
+    let currentQuestionIndex = 0;
+
+    function displayQuestion() {
+      const currentQuestion = questions[currentQuestionIndex];
+      document.getElementById('question').innerHTML = currentQuestion.question;
+
+      const optionsContainer = document.getElementById('options');
+      optionsContainer.innerHTML = '';
+
+      currentQuestion.options.forEach(option => {
+        const radioInput = document.createElement('input');
+        radioInput.type = 'radio';
+        radioInput.name = 'answer';
+        radioInput.value = option;
+
+        const label = document.createElement('label');
+        label.textContent = option;
+
+        optionsContainer.appendChild(radioInput);
+        optionsContainer.appendChild(label);
+        optionsContainer.appendChild(document.createElement('br'));
+      });
+    }
+
+    function checkAnswer() {
+      const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+      if (!selectedAnswer) {
+        document.getElementById('feedback').textContent = "Please select an answer.";
+        return;
+      }
+
+      const userAnswer = selectedAnswer.value;
+      const currentQuestion = questions[currentQuestionIndex];
+      const correctAnswer = currentQuestion.answer;
+
+      if (userAnswer === correctAnswer) {
+        document.getElementById('feedback').textContent = "Correct!";
+      } else {
+        document.getElementById('feedback').textContent = `Incorrect. The correct answer is ${correctAnswer}.`;
+      }
+
+      // Move to the next question or end of questions
+      currentQuestionIndex++;
+      if (currentQuestionIndex < questions.length) {
+        displayQuestion();
+      } else {
+        document.getElementById('question').innerHTML = "<h2>All questions completed!</h2>";
+        document.getElementById('options').innerHTML = "";
+        document.getElementById('feedback').innerHTML = "";
+      }
+    }
+
+    // Initial question display
+    displayQuestion();
+  </script>
+</body>
+</html>
+
+
